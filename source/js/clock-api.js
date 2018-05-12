@@ -26,19 +26,33 @@ const start = () => {
 const drawClock = (date, clockData) => {
     let main = document.querySelector('.main');
     console.log("drawing");
-    let html = clockData.map(chars => renderChars(chars)).join('');
+    let html = clockData.map((chars, column) => renderChars(chars, column, date)).join('');
     main.innerHTML = `<table border="1">` + html + `</table>`;
     console.log("done drawing");
 };
 
-const renderChars = (chars) => {
+const renderChars = (chars, column, date) => {
     let html = `<tr class="chars">`;
-    html += chars.map(char => renderChar(char)).join('');
+    html += chars.map((char, row) => renderChar(char, column, row, date)).join('');
     html += `</tr>`;
     return html;
 };
 
-const renderChar = (char) => {
+const renderChar = (char, column, row, date) => {
+
+    let h = date.getHours();
+    let hourChars = charsForValue(h);
+    let currentPath = [column, row];
+    if (hourChars.filter(lala => (lala[0] === currentPath[0] && lala[1] === currentPath[1]))) {
+        console.log("current hour char should be coloured")
+    }
+
+    let m = date.getMinutes();
+    let minuteChars = charsForValue(m);
+    let s = date.getSeconds();
+    let secondChars = charsForValue(s);
+
+
     let html = `<td class="char">${char}</td>`;
     return html;
 };
@@ -68,8 +82,11 @@ const getClockData = () => {
     });
 };
 
-function coordinatesForValue(value) {
+const charsForDate = (date) => {
 
+};
+
+const charsForValue = (value) => {
     switch (value) {
         case 5:
             return [[2,6],[2,7],[2,8],[2,9]];
@@ -77,5 +94,7 @@ function coordinatesForValue(value) {
             return [[2,0],[2,1],[2,2],[2,3],[2,4],[2,5]];
         case 25:
             return [[2,0],[2,1],[2,2],[2,3],[2,4],[2,5],[2,6],[2,7],[2,8],[2,9]];
+        default:
+            return [[0,0]]
     }
-}
+};
