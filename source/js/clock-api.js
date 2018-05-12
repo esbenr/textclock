@@ -40,20 +40,27 @@ const renderChars = (chars, column, date) => {
 
 const renderChar = (char, column, row, date) => {
 
+    let markCssClass = '';
     let h = date.getHours();
     let hourChars = charsForValue(h);
-    let currentPath = [column, row];
-    if (hourChars.filter(lala => (lala[0] === currentPath[0] && lala[1] === currentPath[1]))) {
-        console.log("current hour char should be coloured")
-    }
-
     let m = date.getMinutes();
     let minuteChars = charsForValue(m);
     let s = date.getSeconds();
     let secondChars = charsForValue(s);
 
+    let currentPath = [column, row];
+    let l = hourChars.filter(lala => {
+        return (lala[0] === column && lala[1] === row);
+    });
+    if (l.length > 0) {
+        console.log(`current hour char should be coloured`);
+        markCssClass = 'mark'
+    }
 
-    let html = `<td class="char">${char}</td>`;
+
+
+
+    let html = `<td class="char ${markCssClass}">${char}</td>`;
     return html;
 };
 
@@ -88,12 +95,16 @@ const charsForDate = (date) => {
 
 const charsForValue = (value) => {
     switch (value) {
+        case 1:
+            return [[5,0],[5,1],[5,2]];
         case 5:
             return [[2,6],[2,7],[2,8],[2,9]];
         case 20:
             return [[2,0],[2,1],[2,2],[2,3],[2,4],[2,5]];
         case 25:
             return [[2,0],[2,1],[2,2],[2,3],[2,4],[2,5],[2,6],[2,7],[2,8],[2,9]];
+        case 30:
+            return [[3,0],[3,1],[3,2],[3,3],[4,0],[4,1],[4,2],[4,3]];
         default:
             return [[0,0]]
     }
